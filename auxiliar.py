@@ -5,9 +5,9 @@
 """
     Atenção: usado no notebook da aula. 
     Não precisa ser usado diretamente
+    
+    Este script não deve ser executado diretamente
 """
-
-print("Este script não deve ser executado diretamente")
 
 from ipywidgets import widgets, interact, interactive, FloatSlider, IntSlider
 import numpy as np
