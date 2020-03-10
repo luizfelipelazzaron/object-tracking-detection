@@ -13,7 +13,7 @@ cap = cv2.VideoCapture('VID_20200302_063445951.mp4')
 
 cap.set(cv2.CAP_PROP_FRAME_WIDTH, 640)
 cap.set(cv2.CAP_PROP_FRAME_HEIGHT, 480)
-
+pi = np.pi
 lower = 0
 upper = 1
 font = cv2.FONT_HERSHEY_SIMPLEX
@@ -33,35 +33,51 @@ def auto_canny(image, sigma=0.33):
 while(True):
     # Capture frame-by-frame
     ret, frame = cap.read()
-
+    
     frame_hsv = cv2.cvtColor (frame, cv2.COLOR_BGR2HSV)
     
     # Convert the frame to grayscale
     gray = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
 
-    ##hsv's do branco
+    #hsv's do branco
     hsv1, hsv2 = aux.ranges('#ffffff')
     
-    ##Mask do branco
-    # mask = cv2.inRange(frame_hsv, hsv1, hsv2)
+    #Mask do branco
+    mask = cv2.inRange(frame, hsv1, hsv2)
     
     ##Seleção
-
-    # A gaussian blur to get rid of the noise in the image
-    blur = cv2.GaussianBlur(frame,(5,5),0)
-    
+    edges = cv2.Canny(gray, 50, 200)
     
     # Detect the edges present in the image
-    bordas = auto_canny(blur)
-    laplacian = cv2.Laplacian(bordas,cv2.CV_8UC1) # Laplacian Edge Detection
-    OUTPUT = laplacian
+
+    # A gaussian blur to get rid of the noise in the image
+    # blur = cv2.GaussianBlur(gray,(5,5),0)
+    
+    # bordas = auto_canny(blur)
+    
+    lines = cv2.HoughLinesP(edges, 1, pi/180, 100, minLineLength=80, maxLineGap=5)
+    print(lines.shape)
+    for line in lines:
+        x1, y1, x2, y2 = line[0]
+        try:
+            tangente = (y2-y1)/(x2-x1) # inclinação
+            if abs(tangente) > 0.6 and abs(tangente) < 0.9:
+                cv2.line(frame, (x1, y1), (x2, y2), (0, 0, 255), 3)
+        except:
+            pass
+
+    OUTPUT = frame
+
     # Draw Lines
     lines = None
-    # lines = cv2.HoughLines(OUTPUT, 1, np.pi/180, 150, None, 0, 0)  
+    lines = cv2.HoughLines(bordas, 20, pi/180, 10, None, 0, 0)  
+    
     if lines is not None:      
         lines = np.uint16(np.around(lines))
-        #print(lines.shape)
+        print(lines.shape)
+
         for i in range(0, len(lines)):
+
             rho = lines[i][0][0]
             theta = lines[i][0][1]
 
@@ -72,9 +88,7 @@ while(True):
             pt2 = (int(x0 - 1000*(-b)), int(y0 - 1000*(a)))
 
             # draw the outer line
-            # cv2.line(frame, pt1, pt2, (0,255,0), 1, cv2.LINE_AA)
-            # cv2.line(selecao, pt1, pt2, (0,255,0), 1, cv2.LINE_AA)
-            cv2.line(OUTPUT, pt1, pt2, (0,255,0), 1, cv2.LINE_AA)
+            cv2.line(OUTPUT, pt1, pt2, (0,255,0), 2, cv2.LINE_AA)
 
     # Linha default
     # cv2.putText(img, text, org, fontFace, fontScale, color[, thickness[, lineType[, bottomLeftOrigin]]])
@@ -85,13 +99,11 @@ while(True):
         pass
     
     # adicionar textos na tela:
-    cv2.putText(frame," Aperte q para sair", (0,50), font, 1,(255,255,255),2,cv2.LINE_AA)
+    cv2.putText(OUTPUT," Aperte q para sair", (0,50), font, 1,(255,255,255),2,cv2.LINE_AA)
     #More drawing functions @ http://docs.opencv.org/2.4/modules/core/doc/drawing_functions.html
 
     # Display the resulting frame
-    # cv2.imshow('Detector de circulos', selecao)
-    # cv2.imshow("Frame", frame)
-    cv2.imshow("mask", OUTPUT)
+    cv2.imshow("outpu", OUTPUT)
 
     if cv2.waitKey(1) & 0xFF == ord('q'):
         break
