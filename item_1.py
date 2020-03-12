@@ -50,7 +50,7 @@ def coeficientes( array ):
         m = round(np.median(m),2)
         n = round(np.median(n),2)
         return m,n
-def tangente(linha):
+def tangente(linha) -> float:
     "Devolve a tangente do ângulo formado entre a linha e a horizontal (no referencial da imagem)"
     x1,y1,x2,y2 = linha[0]
     return (y2-y1)/(x2-x1)
@@ -74,7 +74,7 @@ while(True):
     limiar,img_limiar = cv2.threshold(gray, 180, 255, cv2.THRESH_BINARY)
 
     # Redução de ruido 2
-    # Aplicação de um kernel personalizado (deve existir forma de remover a repetição)
+    # Aplicação de um kernel personalizado ( fonte: https://opencv-python-tutroals.readthedocs.io/en/latest/py_tutorials/py_imgproc/py_morphological_ops/py_morphological_ops.html)
     KERNEL = np.array([
         [0,0,1,0,0],
         [0,0,1,0,0],
