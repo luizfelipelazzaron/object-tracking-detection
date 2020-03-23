@@ -5,6 +5,7 @@ Atividade 3 - Robótica Computacional
 <li> Cicero Thiago </li>
 <li> Thalia Loiola </li>
 
+
 Material copiado das fontes originais:
 
 [https://www.pyimagesearch.com/2018/07/30/opencv-object-tracking/](https://www.pyimagesearch.com/2018/07/30/opencv-object-tracking/)
