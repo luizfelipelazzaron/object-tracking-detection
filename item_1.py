@@ -9,9 +9,9 @@ import auxiliar as aux
 import math
 
 # If you want to open a video, just change v2.VideoCapture(0) from 0 to the filename, just like below
-# cap = cv2.VideoCapture('VID_20200302_063445951.mp4')
+cap = cv2.VideoCapture('VID_20200302_063445951.mp4')
 # cap = cv2.VideoCapture('VID_20200302_063554327.mp4')
-cap = cv2.VideoCapture('VID_20200302_063719050.mp4')
+# cap = cv2.VideoCapture('VID_20200302_063719050.mp4')
 
 HEIGHT = cap.read()[1].shape[0]
 WIDTH = cap.read()[1].shape[1]
@@ -49,10 +49,10 @@ def coeficientes( array ):
         # n1 = m1*x1 + y1
         n = -m*x1 + y1
         
-        m = round(np.median(m),2)
-        n = round(np.median(n),2)
-        return m,n
-        
+        m0 = round(np.median(m),2)
+        n0 = round(np.median(n),2)
+        return m0,n0
+    
 def tangente(linha) -> float:
     "Devolve a tangente do ângulo formado entre a linha e a horizontal (no referencial da imagem)"
     x1,y1,x2,y2 = linha[0]
@@ -107,7 +107,7 @@ while(True):
     # minLineLength e maxLineGap (parâmetros foram modificados até que um resultado
     # satisfatório fosse atingido)
     lines = cv2.HoughLinesP(shapes, 1, pi/180, 50, minLineLength=100, maxLineGap=20)
-    
+    print(lines[0])
     OUTPUT = frame
     
     red_lines = []
