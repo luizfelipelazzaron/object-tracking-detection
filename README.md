@@ -2,7 +2,7 @@ Atividade 3 - Robótica Computacional
 
 <n>Grupo:</n>
 <li> Luiz Felipe Lazzaron </li>
-<li> Cicero Thiago </li>
+<li> Cicero Tiago </li>
 <li> Thalia Loiola </li>
 
 
