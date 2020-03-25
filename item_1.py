@@ -126,6 +126,7 @@ while(True):
                     draw_line(OUTPUT, line, "azul") # desenha linhas azuis
             except:
                 pass
+
     red_lines = np.array(red_lines)
     blue_lines = np.array(blue_lines)
     try:
@@ -133,9 +134,7 @@ while(True):
         # m e n são conficientes de retas da forma:  y = mx + n
         m1,n1 = coeficientes( red_lines  )
         m2,n2 = coeficientes( blue_lines )
-    except:
-        pass
-    finally:
+
         # min() e max() servem para deixar o circulo sempre visível
         # X e Y são as coordenadas do ponto de encontro entre a reta média azul e a reta média vermelha
         X = max(0, min( int((n2-n1)/(m1-m2)), WIDTH ) ) 
@@ -143,8 +142,9 @@ while(True):
         # print("(X,Y) =",(X,Y)) # descomente essa linha para printar no terminal 
         # as coordenadas do centro
         cv2.circle(OUTPUT, (X,Y), 10, (0,255,0), 2, 2)
-    
-    
+    except:
+        pass
+      
     # Adicionar textos na tela
     cv2.putText(OUTPUT," Aperte q para sair", (0,50), font, 1,(255,255,255),2,cv2.LINE_AA)
 
